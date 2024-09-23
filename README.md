@@ -9,4 +9,4 @@
 ![Image alt](https://github.com/NikaSof/PKS/blob/main/pr2.jpg)
 
 # Практика 3
-![Image alt](https://github.com/NikaSof/PKS/blob/main/pr_3_1.jpg) [Image alt](https://github.com/NikaSof/PKS/blob/main/pr_3_2.jpg)
+![Image alt](https://github.com/NikaSof/PKS/blob/main/pr_3_1.jpg) ![Image alt](https://github.com/NikaSof/PKS/blob/main/pr_3_2.jpg)
