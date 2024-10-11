@@ -13,3 +13,6 @@
 
 # Практика 4
 ![Image alt](https://github.com/NikaSof/PKS/blob/main/pr_4_1.jpg) ![Image alt](https://github.com/NikaSof/PKS/blob/main/pr_4_2.jpg) ![Image alt](https://github.com/NikaSof/PKS/blob/main/pr_4_3.jpg)
+
+# Практика 5
+https://github.com/user-attachments/assets/d943cb4e-4af7-401a-b317-5a0433b6ef7f
