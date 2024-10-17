@@ -151,14 +151,6 @@ class _ProductCardState extends State<ProductCard> {
                 onPressed: _toggleFavorite,
               ),
             ),
-            // Positioned(
-            //   bottom: 8,
-            //   right: 8,
-            //   child: IconButton(
-            //     icon: Icon(Icons.delete),
-            //     onPressed: _deleteProduct,
-            //   ),
-            // ),
           ],
         ),
       ),
