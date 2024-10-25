@@ -1,0 +1,32 @@
+name: pks_pr7
+description: "A new Flutter project."
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.3 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.6
+  flutter_svg: ^2.0.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+
+  uses-material-design: true
+  assets:
+    - lib/assets/profile.svg
+    - lib/assets/home.svg
+    - lib/assets/cart.svg
+    - lib/assets/Icon1.png
+    - lib/assets/Icon2.png
+    - lib/assets/Icon3.png
+    - lib/assets/Icon4.png
