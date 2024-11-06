@@ -4,14 +4,25 @@ import 'package:pks_pr7/data/elements.dart';
 class CartPageCard extends StatefulWidget {
   final CartItem item;
   final Function(CartItem) onRemove;
+  final VoidCallback onQuantityChanged;
 
-  const CartPageCard({super.key, required this.item, required this.onRemove});
+  const CartPageCard({
+    super.key,
+    required this.item,
+    required this.onRemove,
+    required this.onQuantityChanged,
+  });
 
   @override
   State<CartPageCard> createState() => _CartPageCardState();
 }
 
 class _CartPageCardState extends State<CartPageCard> {
+
+  // int calculateTotalSum() {
+  //   return cart.fold(0, (sum, item) => sum + item.item.price * item.quantity);
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -82,7 +93,10 @@ class _CartPageCardState extends State<CartPageCard> {
                                   setState(() {
                                     if (widget.item.quantity > 0) {
                                       widget.item.quantity--;
+                                      widget.item.total_price = widget.item.item.price * widget.item.quantity;
+                                      widget.onQuantityChanged();
                                       if (widget.item.quantity == 0) {
+                                        widget.item.total_price = 0;
                                         widget.onRemove(widget.item);
                                       }
                                     }
@@ -105,6 +119,8 @@ class _CartPageCardState extends State<CartPageCard> {
                                 onPressed: () {
                                   setState(() {
                                     widget.item.quantity++;
+                                    widget.item.total_price = widget.item.item.price * widget.item.quantity;
+                                    widget.onQuantityChanged();
                                   });
                                 },
                               ),

@@ -20,9 +20,9 @@ class _CartPageState extends State<CartPage> {
     });
   }
 
-  int calculateTotalSum() {
-    return cart.fold(0, (sum, item) => sum + item.item.price * item.quantity);
-  }
+  // int calculateTotalSum() {
+  //   return cart.fold(0, (sum, item) => sum + item.item.price * item.quantity);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +62,13 @@ class _CartPageState extends State<CartPage> {
                         padding: EdgeInsets.only(bottom: index == cart.length - 1 ? 0 : 16),
                         child: Column(
                           children: [
-                            CartPageCard(item: cart[index], onRemove: removeItem),
+                            CartPageCard(
+                                item: cart[index],
+                                onRemove: removeItem,
+                                onQuantityChanged: () {
+                                  setState(() {});
+                                },
+                            ),
                             if (index == cart.length - 1)
                               Padding(
                                 padding: const EdgeInsets.only(top: 30, bottom: 100),
@@ -79,7 +85,7 @@ class _CartPageState extends State<CartPage> {
                                       ),
                                       const Spacer(),
                                       Text(
-                                        '${calculateTotalSum()} ₽',
+                                        '${cart.map((item) => item.total_price).reduce((value, element) => value + element)}₽',
                                         style: const TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.w600,

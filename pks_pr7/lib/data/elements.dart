@@ -37,10 +37,12 @@ class ProductElement {
 class CartItem{
   final ProductElement item;
   int quantity;
+  int total_price;
 
   CartItem({
     required this.item,
-    this.quantity = 1
+    this.quantity = 1,
+    required this.total_price,
   });
 }
 

@@ -76,7 +76,7 @@ class _ProductElementWidgetState extends State<ProductElementWidget> {
                       setState(() {
                         if (!widget.data.isAdd) {
                           widget.data.isAdd = true;
-                          cart.add(CartItem(item: widget.data));
+                          cart.add(CartItem(item: widget.data, total_price: widget.data.price));
                         }
                       });
                     },
