@@ -7,7 +7,7 @@ import 'models/product.dart';
 import 'models/cart_item.dart';
 import 'services/api_service.dart';
 // import 'widgets/bottom_menu.dart';
-import 'components/products.dart';
+// import 'components/products.dart';
 
 List<CartItem> carts = [];
 List<Product> favorite = [];
@@ -41,6 +41,7 @@ class MyHome extends StatefulWidget {
 
 class _MyHomeState extends State<MyHome> {
   late Future<List<Product>> _items;
+  int _selectedIndex = 0;
 
   @override
   void initState() {
@@ -48,22 +49,11 @@ class _MyHomeState extends State<MyHome> {
     _items = ApiService().getProducts();
   }
 
-  int _selectedIndex = 0;
-
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
-
-  // void toggleFavorite(Product item) {
-  //   item.favorites = !item.favorites;
-  //   if (item.favorites) {
-  //     favorite.add(item);
-  //   } else {
-  //     favorite.removeWhere((favItem) => favItem.id == item.id);
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +80,7 @@ class _MyHomeState extends State<MyHome> {
           body: IndexedStack(
             index: _selectedIndex,
             children: [
-              HomePage(card: items),
+              HomePage(products: items),
               FavoritesPage(),
               CartPage(),
               ProfilePage(),
