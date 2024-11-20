@@ -88,40 +88,40 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void _deleteNoteConfirmation(BuildContext context, int index) {
-    if (widget.card[index].favorites) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Удалить из избранного?'),
-            content: const Text('Вы уверены, что хотите удалить этот квас?'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text('Отмена'),
-              ),
-              TextButton(
-                onPressed: () {
-                  setState(() {
-                    widget.card[index].favorites = false;
-                  });
-                  Navigator.of(context).pop();
-                },
-                child: const Text('Удалить'),
-              ),
-            ],
-          );
-        },
-      );
-    } else {
-      setState(() {
-        widget.card[index].favorites = true;
-      });
-    }
-  }
+  // void _deleteNoteConfirmation(BuildContext context, int index) {
+  //   if (widget.card[index].favorites) {
+  //     showDialog(
+  //       context: context,
+  //       builder: (BuildContext context) {
+  //         return AlertDialog(
+  //           title: const Text('Удалить из избранного?'),
+  //           content: const Text('Вы уверены, что хотите удалить этот квас?'),
+  //           actions: <Widget>[
+  //             TextButton(
+  //               onPressed: () {
+  //                 Navigator.of(context).pop();
+  //               },
+  //               child: const Text('Отмена'),
+  //             ),
+  //             TextButton(
+  //               onPressed: () {
+  //                 setState(() {
+  //                   widget.card[index].favorites = false;
+  //                 });
+  //                 Navigator.of(context).pop();
+  //               },
+  //               child: const Text('Удалить'),
+  //             ),
+  //           ],
+  //         );
+  //       },
+  //     );
+  //   } else {
+  //     setState(() {
+  //       widget.card[index].favorites = true;
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -162,9 +162,9 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ).then((_) => _fetchProducts());
                   },
-                  onLongPress: () {
-                    _deleteNoteConfirmation(context, index);
-                  },
+                  // onLongPress: () {
+                  //   _deleteNoteConfirmation(context, index);
+                  // },
                   child: Stack(
                     children: [
                       ProductCard(item: widget.card[index]),
