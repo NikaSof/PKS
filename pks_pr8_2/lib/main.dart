@@ -59,65 +59,65 @@ class _MyHomeState extends State<MyHome> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Product>>(
-        future: _items,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return SingleChildScrollView(child: Center(child: Text('Error: ${snapshot.error}')));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Scaffold(body: Center(child: Text('No products found', style:
-            TextStyle(
-              color: Colors.white,
-              fontSize: 40,
-            ),
-            )
-            ));
-          }
+      future: _items,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return SingleChildScrollView(child: Center(child: Text('Error: ${snapshot.error}')));
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Scaffold(body: Center(child: Text('No products found', style:
+          TextStyle(
+            color: Colors.white,
+            fontSize: 40,
+          ),
+          )
+          ));
+        }
 
-          final items = snapshot.data!;
+        final items = snapshot.data!;
 
-          return Scaffold(
-            body: IndexedStack(
-              index: _selectedIndex,
-              children: [
-                HomePage(card: items),
-                FavoritesPage(),
-                CartPage(),
-                ProfilePage(),
-              ],
-            ),
-            bottomNavigationBar: BottomNavigationBar(
-              items: const <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  label: 'Главная',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.favorite),
-                  label: 'Избранное',
-                ),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.shopping_cart),
-                    label: "Корзина"
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.person),
-                  label: 'Профиль',
-                ),
-              ],
-              currentIndex: _selectedIndex,
-              // unselectedItemColor: Colors.blueGrey,
-              // selectedItemColor: Colors.black, // Customize as needed
-              selectedItemColor: Colors.teal,
-              unselectedItemColor: Colors.grey[500],
-              showUnselectedLabels: false,
-              showSelectedLabels: false,
-              iconSize: 32,
-              onTap: _onItemTapped,
-            ),
-          );
-        },
+        return Scaffold(
+          body: IndexedStack(
+            index: _selectedIndex,
+            children: [
+              HomePage(card: items),
+              FavoritesPage(),
+              CartPage(),
+              ProfilePage(),
+            ],
+          ),
+          bottomNavigationBar: BottomNavigationBar(
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Главная',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.favorite),
+                label: 'Избранное',
+              ),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.shopping_cart),
+                  label: "Корзина"
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                label: 'Профиль',
+              ),
+            ],
+            currentIndex: _selectedIndex,
+            // unselectedItemColor: Colors.blueGrey,
+            // selectedItemColor: Colors.black, // Customize as needed
+            selectedItemColor: Colors.teal,
+            unselectedItemColor: Colors.grey[500],
+            showUnselectedLabels: false,
+            showSelectedLabels: false,
+            iconSize: 32,
+            onTap: _onItemTapped,
+          ),
+        );
+      },
     );
   }
 }

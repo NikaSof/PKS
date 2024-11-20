@@ -21,6 +21,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final ApiService _apiService = ApiService();
+  bool _isLoading = false;
+  bool _showReloadButton = false;
 
   @override
   void initState() {
@@ -29,36 +31,61 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _fetchProducts() async {
+    setState(() {
+      _isLoading = true;
+      _showReloadButton = false;
+    });
+
+    // Таймер для отображения кнопки перезагрузки
+    Future.delayed(const Duration(seconds: 3), () {
+      if (_isLoading) {
+        setState(() {
+          _showReloadButton = true;
+        });
+      }
+    });
+
     try {
       final products = await _apiService.getProducts();
       setState(() {
         widget.card = products;
+        _isLoading = false;
+        _showReloadButton = false;
       });
     } catch (e) {
       print('Error fetching products: $e');
+      setState(() {
+        _isLoading = false;
+        _showReloadButton = true;
+      });
     }
   }
 
   void _navigateToAddNoteScreen(BuildContext context) async {
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => AddCardPage(items: widget.card, onNoteAdded: (Product newItem) {
-        setState(() {
-          widget.card.add(newItem);
-        });
-        Navigator.pop(context);
-      })),
+      MaterialPageRoute(
+        builder: (context) => AddCardPage(
+          items: widget.card,
+          onNoteAdded: (Product newItem) {
+            setState(() {
+              widget.card.add(newItem);
+            });
+            Navigator.pop(context);
+          },
+        ),
+      ),
     );
   }
 
   void _deleteNoteConfirmation(BuildContext context, int index) {
-    if(widget.card[index].favorites){
+    if (widget.card[index].favorites) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             title: const Text('Удалить из избранного?'),
-            content: const Text('Вы уверены, что хотите удалить этот квас?'),
+            content: const Text('Вы уверены, что хотите удалить этот товар?'),
             actions: <Widget>[
               TextButton(
                 onPressed: () {
@@ -90,76 +117,111 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Align(
-          alignment: Alignment.center,
-          child: Text("Страница всех квасов"),
+        title: Center(child: Text(
+          'Vintage Click',
+          style: TextStyle(
+            color: Colors.teal.shade900,
+            fontSize: 28,
+            fontWeight: FontWeight.bold,
+            fontStyle: FontStyle.italic,
+          ),
+        ),
         ),
       ),
-      body: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 0.7, // Adjust as needed
-        ),
-        itemCount: widget.card.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Padding(
-            padding: const EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ProductPage(prodFuture: _apiService.getProduct(widget.card[index].id))),
-                ).then((_) => _fetchProducts()); // Перезапрашиваем данные после возврата
-              },
-              onLongPress: () {
-                _deleteNoteConfirmation(context, index);
-              },
-              child: Stack(
-                children: [
-                  ProductCard(item: widget.card[index]),
-                  Positioned(
-                    bottom: 8,
-                    left: 8,
-                    child: carts.any((basketItem) => basketItem.items.id == widget.card[index].id)
-                        ? const Icon(Icons.check)
-                        : IconButton(
-                      icon: const Icon(Icons.add),
-                      onPressed: () {
-                        // Добавление элемента в корзину
-                        setState(() {
-                          carts.add(CartItem(widget.card[index], 1));
-                        });
-                      },
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 8,
-                    right: 8,
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.favorite,
-                        color: widget.card[index].favorites ? Colors.red : Colors.black,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          widget.card[index].favorites = !widget.card[index].favorites;
-                          widget.card[index].favorites
-                              ? favorite.add(widget.card[index])
-                              : favorite.removeWhere((i) => i.id == widget.card[index].id);
-                        });
-                      },
-                    ),
-                  ),
-                ],
-              ),
+      body: Stack(
+        children: [
+          // Основной контент (сетка продуктов)
+          GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 0.7,
             ),
-          );
-        },
+            itemCount: widget.card.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProductPage(
+                          prodFuture: _apiService.getProduct(widget.card[index].id),
+                        ),
+                      ),
+                    ).then((_) => _fetchProducts());
+                  },
+                  onLongPress: () {
+                    _deleteNoteConfirmation(context, index);
+                  },
+                  child: Stack(
+                    children: [
+                      ProductCard(item: widget.card[index]),
+                      Positioned(
+                        bottom: 2,
+                        right: 10,
+                        child: SizedBox(
+                          height: 40,
+                          width: 40,
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: carts.any((cartItem) => cartItem.items.id == widget.card[index].id)
+                                ? const Icon(Icons.check)
+                                : IconButton(
+                              icon: const Icon(Icons.add),
+                              onPressed: () {
+                                setState(() {
+                                  carts.add(CartItem(widget.card[index], 1));
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: 8,
+                        right: 8,
+                        child: IconButton(
+                          color: Colors.white,
+                          onPressed: () {
+                            setState(() {
+                              widget.card[index].favorites = !widget.card[index].favorites;
+                                       widget.card[index].favorites
+                                           ? favorite.add(widget.card[index])
+                                           : favorite.removeWhere((i) => i.id == widget.card[index].id);
+                            });
+                          },
+                          icon: Icon(
+                            widget.card[index].favorites
+                                ? Icons.favorite
+                                : Icons.favorite_border,
+                            color: widget.card[index].favorites
+                                ? Colors.red
+                                : Colors.grey,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+          if (_isLoading || _showReloadButton)
+            Center(
+              child: _showReloadButton
+                  ? ElevatedButton(
+                onPressed: _fetchProducts,
+                child: const Text("Перезагрузить"),
+              )
+                  : const CircularProgressIndicator(),
+            ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _navigateToAddNoteScreen(context),
         child: const Icon(Icons.add),
-        tooltip: 'Добавь квас',
+        tooltip: 'Добавь',
       ),
     );
   }

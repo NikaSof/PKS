@@ -16,26 +16,29 @@ class FavoritesPage extends StatefulWidget {
 }
 
 class _FavoritesPageState extends State<FavoritesPage> {
-  late List<Product> favoriteNotesList;
+  List<Product> _favoriteItems = [];
 
   @override
   void initState() {
     super.initState();
+    _loadFavorites();
   }
 
-  List<Product> _takeFavorite(List<Product> abba) {
-    List<Product> items = [];
-    for (var item in abba) {
-      if (item.favorites == true) {
-        items.add(item);
-      }
-    }
-    return items;
+  void _loadFavorites() {
+    setState(() {
+      _favoriteItems = favorite.where((item) => item.favorites).toList();
+    });
   }
 
   void _toggleFavorite(Product item) {
     setState(() {
       item.favorites = !item.favorites;
+      if (!item.favorites) {
+        favorite.removeWhere((favItem) => favItem.id == item.id);
+      } else {
+        favorite.add(item);
+      }
+      _loadFavorites();
     });
   }
 

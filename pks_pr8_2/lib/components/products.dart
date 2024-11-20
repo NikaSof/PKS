@@ -13,41 +13,48 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.95,
-      height: MediaQuery.of(context).size.height * 0.35,
-      decoration: BoxDecoration(
-          border: Border.all(
-              color: Colors.black26,
-              width: 2
+      child: Card(
+          elevation: 4.0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
           ),
-          borderRadius: BorderRadius.circular(5),
-          color: Colors.white
-      ),
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              Text(item.name,
-                style: const TextStyle(
-                    fontSize: 25,
-                    color: Colors.black,
-                    overflow: TextOverflow.ellipsis
+          child: Stack(
+              children: [
+              Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.vertical(top: Radius.circular(10.0)),
+                    child: Image.network(
+                      item.imageUrl,
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                    ),
+                  ),
                 ),
-                maxLines: 2,
-              ),
-              const SizedBox(height: 10,
-              ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.6,
-                height: MediaQuery.of(context).size.height * 0.19,
-                child: Image.network(item.imageUrl
+                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            item.name,
+                            style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 4.0),
+                          Text(
+                            item.price.toStringAsFixed(item.price.truncateToDouble() == item.price ? 0 : 1) + " ₽",
+                            style: TextStyle(fontSize: 14.0, color: Colors.black),
+                          ),
+                        ]
+                    )
                 ),
-              )
-            ],
+              ],
           ),
-        ),
-      ),
+        ]
+      )
+    )
     );
   }
 }

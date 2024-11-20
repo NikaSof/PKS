@@ -25,14 +25,14 @@ class Product {
     );
   }
 
-  // Преобразование объекта в JSON
-  // Map<String, dynamic> toJson() {
-  //   return {
-  //     'ID': id,
-  //     'Name': name,
-  //     'Price': price,
-  //     'ImageURL': imageUrl,
-  //     'Description': description,
-  //   };
-  // }
+// Преобразование объекта в JSON
+// Map<String, dynamic> toJson() {
+//   return {
+//     'ID': id,
+//     'Name': name,
+//     'Price': price,
+//     'ImageURL': imageUrl,
+//     'Description': description,
+//   };
+// }
 }
