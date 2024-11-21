@@ -6,8 +6,6 @@ import 'pages/profile.dart';
 import 'models/product.dart';
 import 'models/cart_item.dart';
 import 'services/api_service.dart';
-// import 'widgets/bottom_menu.dart';
-// import 'components/products.dart';
 
 List<CartItem> carts = [];
 List<Product> favorite = [];
@@ -106,8 +104,6 @@ class _MyHomeState extends State<MyHome> {
               ),
             ],
             currentIndex: _selectedIndex,
-            // unselectedItemColor: Colors.blueGrey,
-            // selectedItemColor: Colors.black, // Customize as needed
             selectedItemColor: Colors.teal,
             unselectedItemColor: Colors.grey[500],
             showUnselectedLabels: false,

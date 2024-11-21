@@ -13,6 +13,21 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage> {
+  void _deleteFromCart(int index) {
+    setState(() {
+      carts.removeAt(index);
+    });
+  }
+
+  void _updateItemCount(int index, int change) {
+    setState(() {
+      carts[index].count += change;
+      if (carts[index].count <= 0) {
+        carts.removeAt(index);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,105 +44,84 @@ class _CartPageState extends State<CartPage> {
           style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
         ),
       )
-          : Center(
-        child: ListView.builder(
-          itemCount: carts.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Padding(
-              padding: const EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
-              child: Slidable(
-                endActionPane: ActionPane(
-                  motion: const ScrollMotion(),
-                  children: [
-                    SlidableAction(
-                      onPressed: (context) {
-                        _deleteFromBasketConfirmation(context, index);
-                      },
-                      backgroundColor: Colors.red,
-                      foregroundColor: Colors.white,
-                      icon: Icons.delete,
-                      label: 'Удалить',
-                    ),
-                  ],
-                ),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ProductPage(prodFuture: ApiService().getProduct(carts[index].items.id)),
-                        ));
-                  },
-                  child: Stack(
+          : ListView.builder(
+        itemCount: carts.length,
+        itemBuilder: (BuildContext context, int index) {
+          final cartItem = carts[index];
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Slidable(
+              endActionPane: ActionPane(
+                motion: const ScrollMotion(),
+                children: [
+                  SlidableAction(
+                    onPressed: (context) => _deleteFromCart(index),
+                    backgroundColor: Colors.red,
+                    foregroundColor: Colors.white,
+                    icon: Icons.delete,
+                    label: 'Удалить',
+                  ),
+                ],
+              ),
+              child: Card(
+                elevation: 3,
+                child: ListTile(
+                  leading: Image.network(
+                    cartItem.items.imageUrl,
+                    width: 50,
+                    height: 50,
+                    fit: BoxFit.cover,
+                  ),
+                  title: Text(cartItem.items.name),
+                  subtitle: Text(
+                    '${cartItem.items.price} ₽ x ${cartItem.count}',
+                  ),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      ProductCard(item: carts[index].items),
-                      Positioned(
-                        bottom: 8,
-                        right: 8,
-                        child: Row(
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.remove),
-                              onPressed: () {
-                                setState(() {
-                                  if (carts[index].count > 0) {
-                                    carts[index].count--;
-                                  }
-                                  if (carts[index].count == 0) {
-                                    _deleteFromBasketConfirmation(context, index);
-                                  }
-                                });
-                              },
-                            ),
-                            Text('${carts[index].count}'),
-                            IconButton(
-                              icon: const Icon(Icons.add),
-                              onPressed: () {
-                                setState(() {
-                                  carts[index].count++;
-                                });
-                              },
-                            ),
-                          ],
-                        ),
+                      IconButton(
+                        icon: const Icon(Icons.remove),
+                        onPressed: () => _updateItemCount(index, -1),
+                      ),
+                      Text('${cartItem.count}'),
+                      IconButton(
+                        icon: const Icon(Icons.add),
+                        onPressed: () => _updateItemCount(index, 1),
                       ),
                     ],
                   ),
                 ),
               ),
-            );
-          },
-        ),
-      ),
-    );
-  }
-
-
-  void _deleteFromBasketConfirmation(BuildContext context, int index) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Удалить из корзины?'),
-          content: const Text('Вы уверены, что хотите удалить этот квас?'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Отмена'),
             ),
-            TextButton(
+          );
+        },
+      ),
+      bottomNavigationBar: carts.isNotEmpty
+          ? Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Итого: ${carts.fold(0, (total, item) => total + (item.items.price * item.count).toInt())} ₽',
+              style: const TextStyle(
+                  fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            ElevatedButton(
               onPressed: () {
-                setState(() {
-                  carts.removeAt(index);
-                });
-                Navigator.of(context).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Заказ оформлен'),
+                  ),
+                );
+
               },
-              child: const Text('Удалить'),
+              child: const Text('Оформить заказ'),
             ),
           ],
-        );
-      },
+        ),
+      )
+          : null,
     );
   }
 }
