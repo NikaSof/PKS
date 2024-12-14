@@ -21,8 +21,9 @@ import 'cubit/navigation_cubit.dart';
 
 Future<void> main() async {
   await Supabase.initialize(
-    url: 'https://hymoooqsykvgsmpdavod.supabase.co',
-    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh5bW9vb3FzeWt2Z3NtcGRhdm9kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQwMjQ1OTksImV4cCI6MjA0OTYwMDU5OX0.wKAMWeLyRzu4mklWZbSoiRczTJlh-raCbb5LtykYlMw',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpvdGJvYnFnbGVpanZ6YWV3cXFhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQxNzUzMDIsImV4cCI6MjA0OTc1MTMwMn0.tssva7gFAXGW7udr3rPPiOWI60xbEkp2sboTXVX-ebU',
+    url: 'https://jotbobqgleijvzaewqqa.supabase.co',
   );
   runApp(MyApp());
 }

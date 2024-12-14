@@ -6,7 +6,7 @@ class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
 
   @override
-  _ProfilePageState createState() => _ProfilePageState();
+  State<ProfilePage> createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
@@ -31,17 +31,7 @@ class _ProfilePageState extends State<ProfilePage> {
         title: const Text('Профиль'),
         actions: [
           IconButton(
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) => LogoutConfirmDialog(
-                  onConfirm: () {
-                    logout();
-                    Navigator.pop(context);
-                  },
-                ),
-              );
-            },
+            onPressed: logout,
             icon: const Icon(Icons.logout),
           ),
         ],
