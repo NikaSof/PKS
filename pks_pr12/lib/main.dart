@@ -99,7 +99,7 @@ class MyHomePage extends StatelessWidget {
               ),
             ],
             currentIndex: selectedIndex,
-            selectedItemColor: const Color(0xFF504BFF),
+            selectedItemColor: Colors.teal.shade900,
             unselectedItemColor: Colors.grey,
             onTap: (index) => context.read<NavigationCubit>().setPage(index),
           ),

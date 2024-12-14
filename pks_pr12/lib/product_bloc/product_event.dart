@@ -73,3 +73,12 @@ class RemoveProductEvent extends ProductEvent {
   @override
   List<Object> get props => [productId];
 }
+
+class SearchProductsEvent extends ProductEvent {
+  final String query;
+
+  const SearchProductsEvent(this.query);
+
+  @override
+  List<Object> get props => [query];
+}

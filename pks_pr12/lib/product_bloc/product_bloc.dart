@@ -12,6 +12,14 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     on<RemoveProductEvent>(_onRemoveProduct);
     on<EditProductEvent>(_onEditProduct);
     on<LoadProductsEvent>(_onLoadProducts);
+    on<SearchProductsEvent>(_onSearchProducts);
+  }
+
+  List<Product> _applySearch(List<Product> products, String query) {
+    return products.where((product) {
+      return product.name.toLowerCase().contains(query.toLowerCase()) ||
+          product.description.toLowerCase().contains(query.toLowerCase());
+    }).toList();
   }
 
   Future<void> _onLoadProducts(LoadProductsEvent event, Emitter<ProductState> emit) async {
@@ -19,8 +27,9 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     try {
       final products = await productApi.getProducts();
       emit(state.copyWith(
+        allProducts: products,
+        filteredProducts: products,
         status: ProductStatus.success,
-        products: products,
       ));
     } catch (e) {
       emit(state.copyWith(
@@ -43,9 +52,11 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       );
       await productApi.createProduct(product);
       final updatedProducts = await productApi.getProducts();
+      final updatedFilteredProducts = _applySearch(updatedProducts, state.searchQuery);
       emit(state.copyWith(
+        allProducts: updatedProducts,
+        filteredProducts: updatedFilteredProducts,
         status: ProductStatus.success,
-        products: updatedProducts,
       ));
     } catch (e) {
       emit(state.copyWith(
@@ -68,9 +79,11 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       );
       await productApi.updateProduct(product);
       final updatedProducts = await productApi.getProducts();
+      final updatedFilteredProducts = _applySearch(updatedProducts, state.searchQuery);
       emit(state.copyWith(
+        allProducts: updatedProducts,
+        filteredProducts: updatedFilteredProducts,
         status: ProductStatus.success,
-        products: updatedProducts,
       ));
     } catch (e) {
       emit(state.copyWith(
@@ -85,9 +98,11 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     try {
       await productApi.deleteProduct(event.productId);
       final updatedProducts = await productApi.getProducts();
+      final updatedFilteredProducts = _applySearch(updatedProducts, state.searchQuery);
       emit(state.copyWith(
+        allProducts: updatedProducts,
+        filteredProducts: updatedFilteredProducts,
         status: ProductStatus.success,
-        products: updatedProducts,
       ));
     } catch (e) {
       emit(state.copyWith(
@@ -96,4 +111,13 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       ));
     }
   }
+
+  void _onSearchProducts(SearchProductsEvent event, Emitter<ProductState> emit) {
+    final filteredProducts = _applySearch(state.products, event.query);
+    emit(state.copyWith(
+      filteredProducts: filteredProducts,
+      searchQuery: event.query,
+    ));
+  }
+
 }
