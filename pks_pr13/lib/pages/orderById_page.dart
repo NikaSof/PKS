@@ -57,8 +57,8 @@ class OrderbyidPage extends StatelessWidget {
                 context.read<OrderBloc>().add(CancelOrder(order.orderId ?? 0));
                 Navigator.pop(context); // Return to the list of orders
               },
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-              child: Text('Отменить заказ'),
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent),
+              child: Text('Отменить заказ', style: TextStyle(color: Colors.white),),
             ),
           ],
         ),
