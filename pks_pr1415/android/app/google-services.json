@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "981288674986",
+    "project_id": "pkschat-9c610",
+    "storage_bucket": "pkschat-9c610.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:981288674986:android:a590ed7ad8b872630092d3",
+        "android_client_info": {
+          "package_name": "com.example.pks_pr1415"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATaZpIf3dG1oMOQ87DVRBkDFK89QIvj2c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
