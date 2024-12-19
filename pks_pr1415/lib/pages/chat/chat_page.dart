@@ -99,6 +99,9 @@ class _ChatPageState extends State<ChatPage> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Text('Loading...');
           }
+          if (snapshot.data!.docs.isEmpty) {
+            return const Center(child: Text('Сообщений пока нет.'));
+          }
           return ListView(
             controller: _scrollController,
             children: snapshot.data!.docs.map((doc) => _buildMessageItem(doc)).toList(),
